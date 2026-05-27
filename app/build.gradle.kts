@@ -63,4 +63,6 @@ dependencies {
 //la dependencia de activity-compose solucionó el problema. Esa librería
 // es el "pegamento" entre la actividad tradicional y el mundo de Compose.
     implementation("androidx.activity:activity-compose:1.9.2")
+
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.5")  //11.2g permite que Compose lea los StateFlow de forma eficiente.
 }

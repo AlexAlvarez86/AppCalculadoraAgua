@@ -1,11 +1,12 @@
 package com.example.appcalculadoraagua.domain.usecases
+
+import kotlinx.coroutines.flow.StateFlow
+
 //2.2.2 Crear clase para calcular el total final de la venta.
 
 class CalcularTotalFinalUseCase () {       //1.- se crea la clase para calcular el total final
-       operator fun invoke(ventaTotal: Double, gastos: String): Double {  //2.- se llama al resultado de ventaTotal (usecase)y gastos como argumentos de la función
-       val montoGastos = gastos.toDoubleOrNull() ?: 0.0
-       val totalFinal = ventaTotal - montoGastos
-           return totalFinal
+    operator fun invoke(ventaTotal: Double, montoGastos: Double): Double {
+        return ventaTotal - montoGastos
     }
 }
 
