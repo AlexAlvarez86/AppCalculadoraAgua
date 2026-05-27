@@ -16,10 +16,18 @@ import com.example.appcalculadoraagua.viewmodel.CalculadoraViewModel
 // Importamos nuestros componentes
 import com.example.appcalculadoraagua.presentation.components.*
 
+import androidx.compose.runtime.getValue // Para poder usar 'by'
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+
 @OptIn(ExperimentalMaterial3Api::class) // Necesario para TopAppBar
 @Composable
 fun CalculadoraScreen(viewModel: CalculadoraViewModel) {
     val scrollState = rememberScrollState()
+
+    //11.2 h RECOLECCIÓN DE LOS FLUJOS (StateFlow -> Compose State)
+    val rutas by viewModel.rutas.collectAsStateWithLifecycle()
+    val gastos by viewModel.gastos.collectAsStateWithLifecycle()
+    val historial by viewModel.historial.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
@@ -48,7 +56,7 @@ fun CalculadoraScreen(viewModel: CalculadoraViewModel) {
         ) {
             // 1. Tarjetas de Rutas
 
-            viewModel.rutas.forEachIndexed { index, ruta ->
+            rutas.forEachIndexed { index, ruta ->
                 RutaCard(
                     ruta = ruta,
                     onValueChange = { vendidos, precio, cargados ->
@@ -60,8 +68,8 @@ fun CalculadoraScreen(viewModel: CalculadoraViewModel) {
 
             // 2. Sección de Totales
             SeccionTotales(
-                gastos = viewModel.gastos,
-                onGastosChange = { viewModel.gastos = it },
+                gastos = gastos,
+                onGastosChange = {viewModel.onGastosChange(it)},
                 ventaBruta = viewModel.obtenerVentaTotal(),
                 totalFinal = viewModel.obtenerTotalFinal(),
 
@@ -137,7 +145,7 @@ fun CalculadoraScreen(viewModel: CalculadoraViewModel) {
 */
          //10.5 MOSTRAR EL HISTORIAL CON 4 ELEMENTOS
             // Mostramos la lista de historial
-            viewModel.historial.forEach { registro ->
+            historial.forEach { registro ->
                 // Ahora le pasamos el objeto completo 'registro'
                 // que es de tipo VentaDiariaEntity
                 HistorialItem(venta = registro)
@@ -170,3 +178,5 @@ fun CalculadoraScreen(viewModel: CalculadoraViewModel) {
         }
     }
 }
+
+
